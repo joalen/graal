@@ -36,7 +36,7 @@ jobs:
         chmod +x mx
 
     - name: Add mx to PATH
-      run: echo "export PATH=\$PATH:$(pwd)" >> $GITHUB_ENV
+      run: echo "export PATH=\$PATH:$(pwd)/mx" >> $GITHUB_ENV
 
     - name: Build GraalVM
       run: |

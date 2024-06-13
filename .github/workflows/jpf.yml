@@ -52,7 +52,7 @@ jobs:
     - name: Build GraalVM
       run: |
         cd graal/vm
-        mx --env ce build
+        mx build
   
     - name: Set up JDK 11 for JPF
       uses: actions/setup-java@v3

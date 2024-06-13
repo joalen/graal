@@ -34,7 +34,8 @@ jobs:
         
     - name: Build GraalVM
       run: |
-        export JAVA_HOME=$JAVA_HOME
+        export JAVA_HOME=/usr/lib/jvm/labsjdk-ce-21
+        export PATH="$JAVA_HOME/bin:$PATH"
         cd graal/vm
         export PATH="/tmp/mx:$PATH" >> $GITHUB_ENV
         mx --env ce build

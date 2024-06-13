@@ -32,8 +32,11 @@ jobs:
         source $GITHUB_ENV
   
     - name: Build GraalVM
+      env:
+        JAVA_HOME: /usr/lib/jvm/labsjdk-ce-21
+        MX: ${{ github.workspace }}/graal/mx/mx
+        PATH: $JAVA_HOME/bin:$MX:$PATH
       run: |
-        source $GITHUB_ENV
         cd graal/vm
         $MX --env ce build
   

@@ -24,7 +24,7 @@ jobs:
         echo "export JDK_VERSION_CHECK=ignore" >> $GITHUB_ENV
 
     - name: Verify Java version
-      run: java -version
+      run: /usr/lib/jvm/labsjdk-ce-21/bin/java -version
     
     - name: Clone mx repositories
       run: |

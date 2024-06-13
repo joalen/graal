@@ -29,7 +29,7 @@ jobs:
         echo 'export PATH=$JAVA_HOME/bin:$(pwd)/mx:$PATH' >> $GITHUB_ENV
         
     - name: Build project with JVMCI-enabled JDK 8 + proprietary build suite
-      run: ./mx --env ce build
+      run: ./mx/mx --env ce build
   
     - name: Set up JDK 11 for JPF
       uses: actions/setup-java@v3

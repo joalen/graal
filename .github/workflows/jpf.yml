@@ -23,7 +23,7 @@ jobs:
       run: |
         curl -L -o labsjdk-ce-21.0.2+13-jvmci-23.1-b33-linux-amd64.tar.gz https://github.com/graalvm/labs-openjdk-21/releases/download/jvmci-23.1-b33/labsjdk-ce-21.0.2+13-jvmci-23.1-b33-linux-amd64.tar.gz
         tar -xzf labsjdk-ce-21.0.2+13-jvmci-23.1-b33-linux-amd64.tar.gz
-        mv jdk1.8.0_242-jvmci-20.0-b02 labsjdk-ce-21
+        mv labsjdk-ce-21.0.2-jvmci-23.1-b33 labsjdk-ce-21
         sudo mv labsjdk-ce-21 /usr/lib/jvm/
         echo 'export JAVA_HOME=/usr/lib/jvm/labsjdk-ce-21' >> $GITHUB_ENV
         echo 'export PATH=$JAVA_HOME/bin:$(pwd)/mx:$PATH' >> $GITHUB_ENV

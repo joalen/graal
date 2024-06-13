@@ -21,10 +21,11 @@ jobs:
       
     - name: Download and install JVMCI-enabled JDK 8
       run: |
-        curl -L -o openjdk-8u242-jvmci-20.0-b02-linux-amd64.tar.gz https://github.com/graalvm/openjdk8-jvmci-builder/releases/download/jvmci-20.0-b02/openjdk-8u242-jvmci-20.0-b02-linux-amd64.tar.gz
-        tar -xzf openjdk-8u242-jvmci-20.0-b02-linux-amd64.tar.gz
-        sudo mv jdk1.8.0_242-jvmci-20.0-b02 /usr/lib/jvm/
-        echo 'export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_242-jvmci-20.0-b02' >> $GITHUB_ENV
+        curl -L -o labsjdk-ce-21.0.2+13-jvmci-23.1-b33-linux-amd64.tar.gz https://github.com/graalvm/labs-openjdk-21/releases/download/jvmci-23.1-b33/labsjdk-ce-21.0.2+13-jvmci-23.1-b33-linux-amd64.tar.gz
+        tar -xzf labsjdk-ce-21.0.2+13-jvmci-23.1-b33-linux-amd64.tar.gz
+        mv jdk1.8.0_242-jvmci-20.0-b02 labsjdk-ce-21
+        sudo mv labsjdk-ce-21 /usr/lib/jvm/
+        echo 'export JAVA_HOME=/usr/lib/jvm/labsjdk-ce-21' >> $GITHUB_ENV
         echo 'export PATH=$JAVA_HOME/bin:$(pwd)/mx:$PATH' >> $GITHUB_ENV
   
     - name: Build project with JVMCI-enabled JDK 8 + proprietary build suite

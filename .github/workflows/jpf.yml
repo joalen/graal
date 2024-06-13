@@ -27,6 +27,7 @@ jobs:
         mv labsjdk-ce-21.0.2-jvmci-23.1-b33 labsjdk-ce-21
         sudo mv labsjdk-ce-21 /usr/lib/jvm/
         echo 'export JAVA_HOME=/usr/lib/jvm/labsjdk-ce-21' >> $GITHUB_ENV
+        echo "export MX=${{ github.workspace }}/mx/mx" >> $GITHUB_ENV
         echo 'export PATH=$JAVA_HOME/bin:$(pwd)/mx:$PATH' >> $GITHUB_ENV
         source $GITHUB_ENV
   
@@ -34,7 +35,7 @@ jobs:
       run: |
         source $GITHUB_ENV
         cd graal/vm
-        mx --env ce build
+        $MX --env ce build
   
     - name: Set up JDK 11 for JPF
       uses: actions/setup-java@v3

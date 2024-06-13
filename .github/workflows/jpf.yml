@@ -34,7 +34,7 @@ jobs:
       run: |
         source $GITHUB_ENV
         cd graal
-        $MX build
+        mx --env ce build
   
     - name: Set up JDK 11 for JPF
       uses: actions/setup-java@v3

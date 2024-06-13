@@ -26,10 +26,10 @@ jobs:
     - name: Install git
       run: sudo apt-get update && sudo apt-get install -y git
 
-    - name: Clone Graal and mx repositories
+    - name: Clone mx repositories
       run: |
-        git clone https://github.com/graalvm/mx.git
-        cd mx
+        git clone https://github.com/graalvm/mx.git /tmp/mx
+        cd /tmp/mx
         chmod +x mx
         
     - name: Build GraalVM
@@ -37,8 +37,8 @@ jobs:
         export JAVA_HOME=$JAVA_HOME
         cd graal/vm
         git checkout vm-1.0.0-rc5
-        export PATH=$(pwd)/../mx:$PATH
-        ../mx --env ce build
+        export PATH="/tmp/mx:$PATH" >> $GITHUB_ENV
+        mx --env ce build
   
     - name: Clone and build jpf-core
       run: |

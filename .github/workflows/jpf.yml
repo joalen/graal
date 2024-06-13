@@ -36,7 +36,6 @@ jobs:
       run: |
         export JAVA_HOME=$JAVA_HOME
         cd graal/vm
-        git checkout vm-1.0.0-rc5
         export PATH="/tmp/mx:$PATH" >> $GITHUB_ENV
         mx --env ce build
   

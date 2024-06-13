@@ -13,12 +13,6 @@ jobs:
       with:
         ref: fefc2a03a1e46ce60ce4b03f223d83640fbef0f4
         path: graal
-
-    - name: Checkout mx repository
-      uses: actions/checkout@v2
-      with:
-        repository: graalvm/mx
-        path: mx
       
     - name: Download and install JVMCI-enabled JDK 8
       run: |
@@ -27,7 +21,6 @@ jobs:
         mv labsjdk-ce-21.0.2-jvmci-23.1-b33 labsjdk-ce-21
         sudo mv labsjdk-ce-21 /usr/lib/jvm/
         echo 'export JAVA_HOME=/usr/lib/jvm/labsjdk-ce-21' >> $GITHUB_ENV
-        echo "PATH=\$PATH:/mx" >> $GITHUB_ENV
         source $GITHUB_ENV
 
     - name: Install dependencies
@@ -50,10 +43,10 @@ jobs:
           libglib2.0-dev
       
     - name: Build GraalVM
-      run: |
-        cd graal/vm
-        mx build
-  
+      run: | 
+        graal/local-build.sh
+        graal/cleanup-local-build.sh
+        
     - name: Set up JDK 11 for JPF
       uses: actions/setup-java@v3
       with:

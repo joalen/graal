@@ -19,10 +19,10 @@ jobs:
         curl -L -o labsjdk-ce-21.0.2+13-jvmci-23.1-b33-linux-amd64.tar.gz https://github.com/graalvm/labs-openjdk-21/releases/download/jvmci-23.1-b33/labsjdk-ce-21.0.2+13-jvmci-23.1-b33-linux-amd64.tar.gz
         tar -xzf labsjdk-ce-21.0.2+13-jvmci-23.1-b33-linux-amd64.tar.gz
         mv labsjdk-ce-21.0.2-jvmci-23.1-b33 labsjdk-ce-21
-        sudo mv labsjdk-ce-21 /usr/lib/jvm/
+        sudo mv labsjdk-ce-21 /usr/lib/jvm
         echo 'export JAVA_HOME=/usr/lib/jvm/labsjdk-ce-21' >> $GITHUB_ENV
-        source $GITHUB_ENV
-
+        echo 'export PATH=$JAVA_HOME/bin:$PATH' >> $GITHUB_ENV
+        
     - name: Install git
       run: sudo apt-get update && sudo apt-get install -y git
 

@@ -1,0 +1,66 @@
+name: JPF Runner
+
+on:
+  push:
+
+jobs:
+  run-jpf:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        ref: fefc2a03a1e46ce60ce4b03f223d83640fbef0f4
+
+    - name: Checkout mx repository
+      uses: actions/checkout@v2
+      with:
+        repository: graalvm/mx
+        path: mx
+      
+    - name: Download and install JVMCI-enabled JDK 8
+      run: |
+        curl -L -o openjdk-8u242-jvmci-20.0-b02-linux-amd64.tar.gz https://github.com/graalvm/openjdk8-jvmci-builder/releases/download/jvmci-20.0-b02/openjdk-8u242-jvmci-20.0-b02-linux-amd64.tar.gz
+        tar -xzf openjdk-8u242-jvmci-20.0-b02-linux-amd64.tar.gz
+        sudo mv jdk1.8.0_242-jvmci-20.0-b02 /usr/lib/jvm/
+        echo 'export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_242-jvmci-20.0-b02' >> $GITHUB_ENV
+        echo 'export PATH=$JAVA_HOME/bin:$(pwd)/mx:$PATH' >> $GITHUB_ENV
+  
+    - name: Build project with JVMCI-enabled JDK 8 + proprietary build suite
+      run: mx --env ce build
+  
+    - name: Set up JDK 11 for JPF
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '11'
+        cache: maven
+  
+    - name: Clone and build jpf-core
+      run: |
+        git clone https://github.com/javapathfinder/jpf-core.git /tmp/jpf-core
+        cd /tmp/jpf-core
+        ./gradlew buildJars
+  
+    - name: Run JPF on JAR files
+      run: |
+        #!/bin/bash
+  
+        directory=$(pwd)
+        runjpf_jar="/tmp/jpf-core/build/RunJPF.jar"
+        jar_files=$(find "$directory" -type f -name "*.jar")
+  
+        for jar_file in $jar_files; 
+        do
+            jar_dir=$(dirname "$jar_file")
+            main_class=$(unzip -p "$jar_file" META-INF/MANIFEST.MF | grep -i 'Main-Class' | awk -F': ' '{print $2}' | tr -d '\r')
+  
+            if [ -z "$main_class" ]; then
+                echo "Main class not found in $jar_file, skipping..."
+                continue
+            fi
+
+            command="java -jar $runjpf_jar +classpath=$jar_file $main_class"
+            $command
+        done

@@ -27,7 +27,7 @@ jobs:
         mv labsjdk-ce-21.0.2-jvmci-23.1-b33 labsjdk-ce-21
         sudo mv labsjdk-ce-21 /usr/lib/jvm/
         echo 'export JAVA_HOME=/usr/lib/jvm/labsjdk-ce-21' >> $GITHUB_ENV
-        run: echo "PATH=\$PATH:/mx" >> $GITHUB_ENV
+        echo "PATH=\$PATH:/mx" >> $GITHUB_ENV
         source $GITHUB_ENV
 
     - name: Install dependencies

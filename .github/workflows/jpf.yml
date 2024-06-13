@@ -43,7 +43,7 @@ jobs:
         export JAVA_HOME=$JAVA_HOME
         cd graal_build/graal/vm
         git checkout vm-1.0.0-rc5
-        ../mx --env ce build
+        ./mx --env ce build
   
     - name: Clone and build jpf-core
       run: |

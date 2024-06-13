@@ -27,7 +27,12 @@ jobs:
         sudo mv labsjdk-ce-21 /usr/lib/jvm/
         echo 'export JAVA_HOME=/usr/lib/jvm/labsjdk-ce-21' >> $GITHUB_ENV
         echo 'export PATH=$JAVA_HOME/bin:$(pwd)/mx:$PATH' >> $GITHUB_ENV
-  
+
+    - name: Set up environment variables
+      run: |
+        echo 'export JAVA_HOME=/usr/lib/jvm/jvmci-8' >> $BASH_ENV
+        echo 'export PATH=$JAVA_HOME/bin:${{ github.workspace }}/mx:$PATH' >> $BASH_ENV
+          
     - name: Build project with JVMCI-enabled JDK 8 + proprietary build suite
       run: mx --env ce build
   

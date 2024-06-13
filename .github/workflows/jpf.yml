@@ -20,10 +20,12 @@ jobs:
         tar -xzf labsjdk-ce-21.0.2+13-jvmci-23.1-b33-linux-amd64.tar.gz
         mv labsjdk-ce-21.0.2-jvmci-23.1-b33 labsjdk-ce-21
         sudo mv labsjdk-ce-21 /usr/lib/jvm
-        echo 'export JAVA_HOME=/usr/lib/jvm/labsjdk-ce-21/bin/java' >> $GITHUB_ENV
-        echo 'export PATH=$JAVA_HOME/bin:$PATH' >> $GITHUB_ENV
+        echo 'export JAVA_HOME=/usr/lib/jvm/labsjdk-ce-21' >> $GITHUB_ENV
         echo "export JDK_VERSION_CHECK=ignore" >> $GITHUB_ENV
-      
+
+    - name: Verify Java version
+      run: java -version
+    
     - name: Clone mx repositories
       run: |
         git clone https://github.com/graalvm/mx.git /tmp/mx

@@ -32,16 +32,18 @@ jobs:
         cd graal_build
         git clone https://github.com/oracle/graal.git
         git clone https://github.com/graalvm/mx.git
+        cd mx
+        chmod +x mx
 
     - name: Add mx to PATH
-      run: echo "export PATH=\$PATH:$(pwd)/mx" >> $GITHUB_ENV
+      run: echo "export PATH=\$PATH:$(pwd)" >> $GITHUB_ENV
 
     - name: Build GraalVM
       run: |
         export JAVA_HOME=$JAVA_HOME
         cd graal_build/graal/vm
         git checkout vm-1.0.0-rc5
-        ./mx --env ce build
+        ../mx --env ce build
   
     - name: Clone and build jpf-core
       run: |

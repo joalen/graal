@@ -25,18 +25,14 @@ jobs:
         tar -xzf labsjdk-ce-21.0.2+13-jvmci-23.1-b33-linux-amd64.tar.gz
         mv labsjdk-ce-21.0.2-jvmci-23.1-b33 labsjdk-ce-21
         sudo mv labsjdk-ce-21 /usr/lib/jvm
-        echo 'export JAVA_HOME=/usr/lib/jvm/labsjdk-ce-21' >> $GITHUB_ENV
-        echo "export JDK_VERSION_CHECK=ignore" >> $GITHUB_ENV
 
     - name: Download and install JVMCI-enabled JDK 8 (macOS)
       if: runner.os == 'macOS'
       run: |
-        wget https://github.com/graalvm/labs-openjdk-21/releases/download/jvmci-23.1-b33/labsjdk-ce-21.0.2+13-jvmci-23.1-b33-debug-darwin-aarch64.tar.gz 
-        tar -xzf labsjdk-ce-21.0.2+13-jvmci-23.1-b33-debug-darwin-aarch64.tar.gz
-        mv labsjdk-ce-21.0.2+13-jvmci-23.1-b33-debug-darwin-aarch64 labsjdk-ce-21
+        wget https://github.com/graalvm/labs-openjdk-21/releases/download/jvmci-23.1-b33/labsjdk-ce-21.0.2+13-jvmci-23.1-b33-darwin-aarch64.tar.gz
+        tar -xzf labsjdk-ce-21.0.2+13-jvmci-23.1-b33-darwin-aarch64.tar.gz
+        mv labsjdk-ce-21.0.2-jvmci-23.1-b33 labsjdk-ce-21
         sudo mv labsjdk-ce-21 /Library/Java/JavaVirtualMachines/
-        echo 'export JAVA_HOME=/usr/lib/jvm/labsjdk-ce-21' >> $GITHUB_ENV
-        echo "export JDK_VERSION_CHECK=ignore" >> $GITHUB_ENV
             
     - name: Clone mx repositories
       run: |
@@ -45,6 +41,7 @@ jobs:
         chmod +x mx
 
     - name: Build GraalVM (Linux)
+      if: runner.os == 'Linux' 
       run: |
         export JAVA_HOME=/usr/lib/jvm/labsjdk-ce-21
         export PATH="$JAVA_HOME/bin:$PATH"
@@ -53,6 +50,7 @@ jobs:
         mx --env ce build
         
     - name: Build GraalVM (macOS)
+      if: runner.os == 'macOS' 
       run: |
         export JAVA_HOME=/Library/Java/JavaVirtualMachines/labsjdk-ce-21/Contents/Home
         export PATH="$JAVA_HOME:$PATH"

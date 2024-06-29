@@ -58,6 +58,13 @@ jobs:
         export PATH="/tmp/mx:$PATH" >> $GITHUB_ENV
         mx --env ce build
 
+    - name: Set up JDK 11 for JPF
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '11'
+        cache: maven
+        
     - name: Clone and build jpf-core
       run: |
         git clone https://github.com/javapathfinder/jpf-core.git /tmp/jpf-core

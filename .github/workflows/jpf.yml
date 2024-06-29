@@ -18,7 +18,8 @@ jobs:
         ref: fefc2a03a1e46ce60ce4b03f223d83640fbef0f4
         path: graal
       
-    - name: Download and install JVMCI-enabled JDK 8
+    - name: Download and install JVMCI-enabled JDK 8 (Linux)
+      if: runner.os == 'Linux'
       run: |
         curl -L -o labsjdk-ce-21.0.2+13-jvmci-23.1-b33-linux-amd64.tar.gz https://github.com/graalvm/labs-openjdk-21/releases/download/jvmci-23.1-b33/labsjdk-ce-21.0.2+13-jvmci-23.1-b33-linux-amd64.tar.gz
         tar -xzf labsjdk-ce-21.0.2+13-jvmci-23.1-b33-linux-amd64.tar.gz
@@ -27,23 +28,38 @@ jobs:
         echo 'export JAVA_HOME=/usr/lib/jvm/labsjdk-ce-21' >> $GITHUB_ENV
         echo "export JDK_VERSION_CHECK=ignore" >> $GITHUB_ENV
 
-    - name: Verify Java version
-      run: /usr/lib/jvm/labsjdk-ce-21/bin/java -version
-    
+    - name: Download and install JVMCI-enabled JDK 8 (macOS)
+      if: runner.os == 'macOS'
+      run: |
+        wget https://github.com/graalvm/labs-openjdk-21/releases/download/jvmci-23.1-b33/labsjdk-ce-21.0.2+13-jvmci-23.1-b33-debug-darwin-aarch64.tar.gz 
+        tar -xzf labsjdk-ce-21.0.2+13-jvmci-23.1-b33-debug-darwin-aarch64.tar.gz
+        mv labsjdk-ce-21.0.2+13-jvmci-23.1-b33-debug-darwin-aarch64 labsjdk-ce-21
+        sudo mv labsjdk-ce-21 /Library/Java/JavaVirtualMachines/
+        echo 'export JAVA_HOME=/usr/lib/jvm/labsjdk-ce-21' >> $GITHUB_ENV
+        echo "export JDK_VERSION_CHECK=ignore" >> $GITHUB_ENV
+            
     - name: Clone mx repositories
       run: |
         git clone https://github.com/graalvm/mx.git /tmp/mx
         cd /tmp/mx
         chmod +x mx
-        
-    - name: Build GraalVM
+
+    - name: Build GraalVM (Linux)
       run: |
         export JAVA_HOME=/usr/lib/jvm/labsjdk-ce-21
         export PATH="$JAVA_HOME/bin:$PATH"
         cd graal/vm
         export PATH="/tmp/mx:$PATH" >> $GITHUB_ENV
         mx --env ce build
-  
+        
+    - name: Build GraalVM (macOS)
+      run: |
+        export JAVA_HOME=/Library/Java/JavaVirtualMachines/labsjdk-ce-21/Contents/Home
+        export PATH="$JAVA_HOME:$PATH"
+        cd graal/vm
+        export PATH="/tmp/mx:$PATH" >> $GITHUB_ENV
+        mx --env ce build
+
     - name: Clone and build jpf-core
       run: |
         git clone https://github.com/javapathfinder/jpf-core.git /tmp/jpf-core

@@ -92,9 +92,12 @@ jobs:
             if [ -z "$main_class" ]; then
                 continue
             fi
-            
+            if echo "$main_class" | grep -Eiq 'org\.springframework|io\.quarkus'; then
+                continue
+            fi
+            safe_main_class=$(echo "$main_class" | tr -d '\r' | tr -d '\n' | sed 's/[\/:*?"<>|]/_/g')
             command="java -jar $runjpf_jar +classpath=$jar_file $main_class" 
-            $command > "./jpf_reports/${main_class}_jpf_report.txt"
+            $command > "./jpf_reports/${safe_main_class}_jpf_report.txt"
         done
 
     - name: Upload JPF reports
